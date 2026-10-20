@@ -1,0 +1,181 @@
+{
+  "common": {
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "retry": "Reintentar",
+    "clear": "Limpiar"
+  },
+
+  "nav": {
+    "main": "Navegación principal",
+    "explore": "Explorar",
+    "library": "Biblioteca",
+    "profile": "Mi perfil"
+  },
+
+  "welcome": {
+    "title": "Tu biblioteca de videojuegos",
+    "description": "Descubre videojuegos, organiza tu biblioteca y lleva el control de todo lo que juegas.",
+    "continue": "Pulsa para continuar",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta"
+  },
+
+  "states": {
+    "emptyTitle": "No hay resultados",
+    "emptyDescription": "Prueba con otra búsqueda o con otros filtros.",
+    "errorTitle": "No se ha podido cargar",
+    "errorDescription": "Ha ocurrido un error. Inténtalo de nuevo."
+  },
+
+  "auth": {
+    "loginTitle": "Iniciar sesión",
+    "loginDescription": "Accede a tu cuenta para consultar y gestionar tu biblioteca.",
+
+    "registerTitle": "Crear cuenta",
+    "registerDescription": "Crea tu cuenta para empezar a organizar tu biblioteca de videojuegos.",
+
+    "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordHint": "Debe tener al menos 8 caracteres",
+    "confirmPassword": "Repetir contraseña",
+
+    "submit": "Entrar",
+    "registerSubmit": "Crear cuenta",
+
+    "noAccount": "¿No tienes una cuenta?",
+    "register": "Regístrate",
+
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "login": "Iniciar sesión",
+
+    "errors": {
+      "required": "Este campo es obligatorio",
+      "email": "Introduce un correo electrónico válido",
+      "usernameLength": "El nombre de usuario debe tener entre 3 y 50 caracteres",
+      "passwordLength": "La contraseña debe tener entre 8 y 72 caracteres",
+      "passwordMismatch": "Las contraseñas no coinciden"
+    }
+  },
+
+  "catalog": {
+    "title": "Encuentra tu próximo juego",
+
+    "searchPlaceholder": "Buscar videojuegos...",
+    "searchLabel": "Buscar videojuegos",
+    "searchClear": "Borrar búsqueda",
+
+    "rawgAttribution": "Datos proporcionados por",
+
+    "filters": {
+      "label": "Filtrar por género",
+      "all": "Todos",
+      "action": "Acción",
+      "adventure": "Aventura",
+      "indie": "Indie",
+      "rpg": "RPG"
+    }
+  },
+
+  "game": {
+    "addToLibrary": "Añadir a biblioteca",
+    "externalRating": "Puntuación externa"
+  },
+
+  "gameDetail": {
+    "about": "Acerca del juego",
+    "genres": "Géneros",
+    "platforms": "Plataformas"
+  },
+
+  "library": {
+    "title": "Mi biblioteca",
+    "gamesCount": "{count} juegos",
+
+    "searchLabel": "Buscar en mi biblioteca",
+    "searchClear": "Borrar búsqueda",
+
+    "statusFilter": "Filtrar por estado",
+    "sortLabel": "Ordenar biblioteca",
+
+    "status": {
+      "all": "Todos",
+      "PLAYING": "Jugando",
+      "COMPLETED": "Completados",
+      "WANT_TO_PLAY": "Pendientes",
+      "DROPPED": "Abandonados"
+    },
+
+    "statusSingle": {
+      "PLAYING": "Jugando",
+      "COMPLETED": "Completado",
+      "WANT_TO_PLAY": "Pendiente",
+      "DROPPED": "Abandonado"
+    },
+
+    "sort": {
+      "recent": "Más recientes",
+      "rating": "Mi puntuación",
+      "title": "Título"
+    },
+
+    "addTitle": "Añadir a mi biblioteca",
+    "editTitle": "Editar juego de mi biblioteca",
+
+    "statusField": "Estado",
+    "ratingField": "Mi puntuación",
+
+    "ratingEmpty": "Sin puntuar",
+    "ratingClear": "Quitar puntuación",
+
+    "hide": "Ocultar este juego a otros usuarios",
+
+    "hidden": "Juego oculto",
+    "edit": "Editar juego",
+
+    "emptyTitle": "Tu biblioteca está vacía",
+    "emptyDescription": "Todavía no tienes juegos en tu biblioteca. Explora el catálogo y añade el primero.",
+    "exploreGames": "Explorar videojuegos"
+  },
+
+  "profile": {
+    "title": "Perfil",
+    "edit": "Editar perfil",
+
+    "bio": "Biografía",
+    "avatar": "Avatar",
+    "banner": "Banner",
+
+    "library": "Biblioteca",
+    "libraryPrivate": "Esta biblioteca es privada",
+
+    "stats": {
+      "total": "Total",
+      "playing": "Jugando",
+      "completed": "Completados",
+      "wantToPlay": "Pendientes",
+      "dropped": "Abandonados"
+    },
+
+    "editTitle": "Editar perfil",
+    "username": "Nombre de usuario",
+    "bioField": "Biografía",
+    "avatarUrl": "URL del avatar",
+    "bannerUrl": "URL del banner",
+    "libraryVisibility": "Visibilidad de la biblioteca",
+
+    "visibility": {
+      "PUBLIC": "Pública",
+      "PRIVATE": "Privada"
+    },
+
+    "editDescription": "Actualiza la información que se muestra en tu perfil.",
+    "bioHint": "Máximo 300 caracteres.",
+    "errors": {
+      "bioLength": "La biografía no puede superar los 300 caracteres.",
+      "urlLength": "La URL no puede superar los 1000 caracteres."
+    }
+  }
+}

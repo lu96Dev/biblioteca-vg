@@ -1,0 +1,41 @@
+// Tokens de diseño: única fuente de colores, tipografía, espaciado y radios.
+:root {
+  --color-bg: #14161c;
+  --color-surface: #1e222b;
+  --color-surface-2: #262b36;
+  --color-border: #2a2f3a;
+  --color-text: #f2f4f8;
+  --color-text-muted: #a9b0bf;
+  --color-accent: #6d4aff;
+  --color-accent-hover: #7f61ff;
+  --color-rating: #f5b73b;
+  --color-danger: #ff6b6b;
+  --color-success: #4ade80;
+  --color-info: #7db7ff;
+  --color-violet: #b9a6ff;
+
+  --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2.5rem;
+  --font-size-hero: 6rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  --touch-target: 44px;
+  --focus-ring: 0 0 0 3px rgba(109, 74, 255, 0.55);
+  --z-modal: 1000;
+}

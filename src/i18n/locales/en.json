@@ -1,0 +1,181 @@
+{
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "retry": "Retry",
+    "clear": "Clear"
+  },
+
+  "nav": {
+    "main": "Main navigation",
+    "explore": "Explore",
+    "library": "Library",
+    "profile": "My profile"
+  },
+
+  "welcome": {
+    "title": "Your video game library",
+    "description": "Discover games, organise your library and keep track of everything you play.",
+    "continue": "Tap to continue",
+    "login": "Sign in",
+    "register": "Create account"
+  },
+
+  "states": {
+    "emptyTitle": "No results",
+    "emptyDescription": "Try another search or different filters.",
+    "errorTitle": "Unable to load",
+    "errorDescription": "Something went wrong. Please try again."
+  },
+
+  "auth": {
+    "loginTitle": "Sign in",
+    "loginDescription": "Sign in to view and manage your library.",
+
+    "registerTitle": "Create account",
+    "registerDescription": "Create your account to start organising your video game library.",
+
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "passwordHint": "Must contain at least 8 characters",
+    "confirmPassword": "Confirm password",
+
+    "submit": "Sign in",
+    "registerSubmit": "Create account",
+
+    "noAccount": "Don't have an account?",
+    "register": "Sign up",
+
+    "hasAccount": "Already have an account?",
+    "login": "Sign in",
+
+    "errors": {
+      "required": "This field is required",
+      "email": "Enter a valid email address",
+      "usernameLength": "Username must be between 3 and 50 characters",
+      "passwordLength": "Password must be between 8 and 72 characters",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+
+  "catalog": {
+    "title": "Find your next game",
+
+    "searchPlaceholder": "Search video games...",
+    "searchLabel": "Search video games",
+    "searchClear": "Clear search",
+
+    "rawgAttribution": "Data provided by",
+
+    "filters": {
+      "label": "Filter by genre",
+      "all": "All",
+      "action": "Action",
+      "adventure": "Adventure",
+      "indie": "Indie",
+      "rpg": "RPG"
+    }
+  },
+
+  "game": {
+    "addToLibrary": "Add to library",
+    "externalRating": "External rating"
+  },
+
+  "gameDetail": {
+    "about": "About the game",
+    "genres": "Genres",
+    "platforms": "Platforms"
+  },
+
+  "library": {
+    "title": "My library",
+    "gamesCount": "{count} games",
+
+    "searchLabel": "Search my library",
+    "searchClear": "Clear search",
+
+    "statusFilter": "Filter by status",
+    "sortLabel": "Sort library",
+
+    "status": {
+      "all": "All",
+      "PLAYING": "Playing",
+      "COMPLETED": "Completed",
+      "WANT_TO_PLAY": "Want to play",
+      "DROPPED": "Dropped"
+    },
+
+    "statusSingle": {
+      "PLAYING": "Playing",
+      "COMPLETED": "Completed",
+      "WANT_TO_PLAY": "Want to play",
+      "DROPPED": "Dropped"
+    },
+
+    "sort": {
+      "recent": "Most recent",
+      "rating": "My rating",
+      "title": "Title"
+    },
+
+    "addTitle": "Add to my library",
+    "editTitle": "Edit library game",
+
+    "statusField": "Status",
+    "ratingField": "My rating",
+
+    "ratingEmpty": "Not rated",
+    "ratingClear": "Remove rating",
+
+    "hide": "Hide this game from other users",
+
+    "hidden": "Hidden game",
+    "edit": "Edit game",
+
+    "emptyTitle": "Your library is empty",
+    "emptyDescription": "You don't have any games in your library yet. Explore the catalogue and add your first one.",
+    "exploreGames": "Explore games"
+  },
+
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit profile",
+
+    "bio": "Bio",
+    "avatar": "Avatar",
+    "banner": "Banner",
+
+    "library": "Library",
+    "libraryPrivate": "This library is private",
+
+    "stats": {
+      "total": "Total",
+      "playing": "Playing",
+      "completed": "Completed",
+      "wantToPlay": "Want to play",
+      "dropped": "Dropped"
+    },
+
+    "editTitle": "Edit profile",
+    "username": "Username",
+    "bioField": "Bio",
+    "avatarUrl": "Avatar URL",
+    "bannerUrl": "Banner URL",
+    "libraryVisibility": "Library visibility",
+
+    "visibility": {
+      "PUBLIC": "Public",
+      "PRIVATE": "Private"
+    },
+
+    "editDescription": "Update the information displayed on your profile.",
+    "bioHint": "Maximum 300 characters.",
+    "errors": {
+      "bioLength": "The bio cannot exceed 300 characters.",
+      "urlLength": "The URL cannot exceed 1000 characters."
+    }
+  }
+}
