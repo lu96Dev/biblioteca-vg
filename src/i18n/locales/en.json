@@ -62,7 +62,7 @@
 
   "catalog": {
     "title": "Find your next game",
-
+    "clearFilters": "Clear filters",
     "searchPlaceholder": "Search video games...",
     "searchLabel": "Search video games",
     "searchClear": "Clear search",
@@ -81,13 +81,16 @@
 
   "game": {
     "addToLibrary": "Add to library",
+    "editLibraryEntry": "Edit in my library",
     "externalRating": "External rating"
   },
 
   "gameDetail": {
     "about": "About the game",
     "genres": "Genres",
-    "platforms": "Platforms"
+    "platforms": "Platforms",
+    "notFoundTitle": "Game not found",
+    "notFoundDescription": "We couldn't find the video game you're looking for."
   },
 
   "library": {
@@ -137,7 +140,16 @@
 
     "emptyTitle": "Your library is empty",
     "emptyDescription": "You don't have any games in your library yet. Explore the catalogue and add your first one.",
-    "exploreGames": "Explore games"
+    "exploreGames": "Explore games",
+
+    "errors": {
+      "alreadyAdded": "This game is already in your library."
+    },
+
+    "remove": "Remove from my library",
+    "removeConfirmTitle": "Remove from library",
+    "removeConfirmDescription": "This action will remove the game and all its personal information from your library. Do you want to continue?",
+    "removeConfirmAction": "Remove"
   },
 
   "profile": {
@@ -176,6 +188,8 @@
     "errors": {
       "bioLength": "The bio cannot exceed 300 characters.",
       "urlLength": "The URL cannot exceed 1000 characters."
-    }
+    },
+
+    "statsLabel": "Library statistics"
   }
 }

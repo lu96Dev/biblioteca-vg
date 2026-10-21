@@ -27,43 +27,27 @@ const bannerStyle = computed(() =>
 
 <template>
   <section class="profile-header">
-    <div
-      class="profile-header__banner"
-      :style="bannerStyle"
-    />
+    <div class="profile-header__visual">
+      <div class="profile-header__banner" :style="bannerStyle" />
+
+      <Avatar class="profile-header__avatar" :name="username" :src="avatarUrl" size="lg" />
+    </div>
 
     <div class="profile-header__content">
-      <Avatar
-        class="profile-header__avatar"
-        :name="username"
-        :src="avatarUrl"
-      />
+      <div class="profile-header__heading">
+        <div>
+          <h1 class="profile-header__username">@{{ username }}</h1>
 
-      <div class="profile-header__info">
-        <div class="profile-header__heading">
-          <div>
-            <h1 class="profile-header__username">
-              @{{ username }}
-            </h1>
-
-            <p
-              v-if="bio"
-              class="profile-header__bio"
-            >
-              {{ bio }}
-            </p>
-          </div>
-
-          <RouterLink
-            v-if="ownProfile"
-            to="/profile/edit"
-            class="profile-header__edit-link"
-          >
-            <BaseButton variant="secondary">
-              {{ t('profile.edit') }}
-            </BaseButton>
-          </RouterLink>
+          <p v-if="bio" class="profile-header__bio">
+            {{ bio }}
+          </p>
         </div>
+
+        <RouterLink v-if="ownProfile" to="/profile/edit" class="profile-header__edit-link">
+          <BaseButton variant="secondary">
+            {{ t('profile.edit') }}
+          </BaseButton>
+        </RouterLink>
       </div>
     </div>
   </section>
@@ -74,49 +58,62 @@ const bannerStyle = computed(() =>
   width: 100%;
 }
 
-.profile-header__banner {
-  width: 100%;
-  height: 180px;
-  background-color: var(--color-surface-2);
-  background-position: center;
-  background-size: cover;
-
-  @media (min-width: 768px) {
-    height: 240px;
-  }
-}
-
-.profile-header__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.profile-header__visual {
+  position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--space-4);
+}
+
+.profile-header__banner {
+  width: 100%;
+  height: 200px;
+  background-color: var(--color-surface-2);
+  background-position: center;
+  background-size: cover;
+  border-radius: var(--radius-lg);
 
   @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: flex-end;
-    gap: var(--space-5);
-    padding: 0 var(--space-7);
+    height: 280px;
   }
 }
 
 .profile-header__avatar {
-  margin-top: -48px;
+  position: absolute;
+
+  /*
+   * Lo colocamos en la parte inferior izquierda
+   * y hacemos que sobresalga del banner.
+   */
+  bottom: -72px;
+  left: var(--space-4);
+
+  z-index: 1;
 
   @media (min-width: 768px) {
-    margin-top: -64px;
+    left: var(--space-7);
   }
 }
 
-.profile-header__info {
-  flex: 1;
-  padding-top: var(--space-3);
+.profile-header__content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /*
+   * 72px corresponden aproximadamente a la mitad
+   * del avatar de 144px.
+   */
+  padding:
+    calc(72px + var(--space-5))
+    var(--space-4)
+    0;
 
   @media (min-width: 768px) {
-    padding-bottom: var(--space-2);
+    padding:
+      calc(72px + var(--space-5))
+      var(--space-7)
+      0;
   }
 }
 

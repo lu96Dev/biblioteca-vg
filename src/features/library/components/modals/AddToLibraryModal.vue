@@ -10,14 +10,8 @@ import BaseModal from '@/shared/components/BaseModal.vue'
 import FormField from '@/shared/components/FormField.vue'
 import RatingInput from '@/shared/components/RatingInput.vue'
 
-import type { LibraryStatus } from '@/features/library/types/library'
+import type { AddToLibraryPayload, LibraryStatus } from '@/features/library/types/library'
 import type { SelectOption } from '@/shared/types/ui'
-
-interface AddToLibraryPayload {
-  status: LibraryStatus
-  personalRating: number | null
-  hidden: boolean
-}
 
 const props = defineProps<{
   open: boolean

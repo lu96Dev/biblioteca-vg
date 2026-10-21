@@ -10,7 +10,7 @@ const { t } = useI18n()
 <template>
   <main class="welcome-page">
     <section class="welcome-page__content">
-      <Logo class="welcome-page__logo" />
+      <Logo class="welcome-page__logo" size="lg" />
 
       <div class="welcome-page__text">
         <h1 class="welcome-page__title">
@@ -23,27 +23,14 @@ const { t } = useI18n()
       </div>
 
       <div class="welcome-page__actions">
-        <RouterLink
-          to="/login"
-          class="welcome-page__action"
-        >
-          <BaseButton
-            size="lg"
-            block
-          >
+        <RouterLink to="/login" class="welcome-page__action">
+          <BaseButton size="lg" block>
             {{ t('welcome.login') }}
           </BaseButton>
         </RouterLink>
 
-        <RouterLink
-          to="/register"
-          class="welcome-page__action"
-        >
-          <BaseButton
-            variant="secondary"
-            size="lg"
-            block
-          >
+        <RouterLink to="/register" class="welcome-page__action">
+          <BaseButton variant="secondary" size="lg" block>
             {{ t('welcome.register') }}
           </BaseButton>
         </RouterLink>

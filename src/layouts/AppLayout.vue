@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
-import AppHeader from './components/AppHeader.vue'
+import { useProfile } from '@/features/profile/composables/useProfile'
+import AppHeader from '@/layouts/components/AppHeader.vue'
+
+const { profile } = useProfile()
 </script>
 
 <template>
   <div class="app-layout">
-    <AppHeader />
+    <AppHeader
+      :username="profile.username"
+      :avatar-url="profile.avatarUrl || undefined"
+    />
 
     <main class="app-layout__content">
       <RouterView />

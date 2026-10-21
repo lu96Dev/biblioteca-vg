@@ -10,11 +10,7 @@ const { t } = useI18n()
 const loading = ref(false)
 const errorMessage = ref<string>()
 
-function handleRegister(payload: {
-  username: string
-  email: string
-  password: string
-}) {
+function handleRegister(payload: { username: string; email: string; password: string }) {
   console.log('Registro:', payload)
 
   // TEMPORAL:
@@ -31,7 +27,7 @@ function handleRegister(payload: {
 <template>
   <section class="register-page">
     <div class="register-page__container">
-      <Logo class="register-page__logo" />
+      <Logo class="login-page__logo" size="lg" />
 
       <div class="register-page__heading">
         <h1 class="register-page__title">
@@ -43,11 +39,7 @@ function handleRegister(payload: {
         </p>
       </div>
 
-      <RegisterForm
-        :loading="loading"
-        :error-message="errorMessage"
-        @submit="handleRegister"
-      />
+      <RegisterForm :loading="loading" :error-message="errorMessage" @submit="handleRegister" />
     </div>
   </section>
 </template>

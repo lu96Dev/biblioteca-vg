@@ -1,305 +1,124 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import Avatar from '@/shared/atomic-components/Avatar.vue'
-import BaseButton from '@/shared/atomic-components/BaseButton.vue'
-import BaseInput from '@/shared/atomic-components/BaseInput.vue'
-import BaseSelect from '@/shared/atomic-components/BaseSelect.vue'
-import BaseTextarea from '@/shared/atomic-components/BaseTextarea.vue'
-import FormField from '@/shared/components/FormField.vue'
-
-import type { SelectOption } from '@/shared/types/ui'
-
-type LibraryVisibility = 'PUBLIC' | 'PRIVATE'
-
-interface EditProfileForm {
-  username: string
-  bio: string
-  avatarUrl: string
-  bannerUrl: string
-  libraryVisibility: LibraryVisibility
-}
+import ProfileHeader from '@/features/profile/components/ProfileHeader.vue'
+import LibraryPreview from '@/features/profile/components/LibraryPreview.vue'
+import { useProfile } from '@/features/profile/composables/useProfile'
+import { useLibrary } from '@/features/library/composables/useLibrary'
 
 const { t } = useI18n()
-const router = useRouter()
+const route = useRoute()
+const { profile } = useProfile()
+const { entries } = useLibrary()
 
-const loading = ref(false)
-const errorMessage = ref<string>()
-const submitted = ref(false)
+const profileUsername = computed(() => String(route.params.username))
 
-// MOCK TEMPORAL.
-// Posteriormente vendrá de GET /api/v1/me/profile.
-const form = reactive<EditProfileForm>({
-  username: 'luis',
-  bio: 'RPG, Souls e indie',
-  avatarUrl: '',
-  bannerUrl: '',
-  libraryVisibility: 'PUBLIC',
-})
-
-const errors = reactive<{
-  username?: string
-  bio?: string
-  avatarUrl?: string
-  bannerUrl?: string
-}>({})
-
-const visibilityOptions = computed<SelectOption[]>(() => [
-  {
-    value: 'PUBLIC',
-    label: t('profile.visibility.PUBLIC'),
-  },
-  {
-    value: 'PRIVATE',
-    label: t('profile.visibility.PRIVATE'),
-  },
-])
-
-const bannerStyle = computed(() =>
-  form.bannerUrl
-    ? {
-        backgroundImage: `url("${form.bannerUrl}")`,
-      }
-    : undefined,
+const ownProfile = computed(
+  () => profileUsername.value.toLowerCase() === profile.value.username.toLowerCase(),
 )
 
-function validate(): boolean {
-  const username = form.username.trim()
+const libraryIsPrivate = computed(
+  () => !ownProfile.value && profile.value.libraryVisibility === 'PRIVATE',
+)
 
-  errors.username = !username
-    ? t('auth.errors.required')
-    : username.length < 3 || username.length > 50
-      ? t('auth.errors.usernameLength')
-      : undefined
+const stats = computed(() => ({
+  total: entries.value.length,
 
-  errors.bio =
-    form.bio.length > 300
-      ? t('profile.errors.bioLength')
-      : undefined
+  playing: entries.value.filter((entry) => entry.status === 'PLAYING').length,
 
-  errors.avatarUrl =
-    form.avatarUrl.length > 1000
-      ? t('profile.errors.urlLength')
-      : undefined
+  completed: entries.value.filter((entry) => entry.status === 'COMPLETED').length,
 
-  errors.bannerUrl =
-    form.bannerUrl.length > 1000
-      ? t('profile.errors.urlLength')
-      : undefined
+  wantToPlay: entries.value.filter((entry) => entry.status === 'WANT_TO_PLAY').length,
 
-  return (
-    !errors.username &&
-    !errors.bio &&
-    !errors.avatarUrl &&
-    !errors.bannerUrl
-  )
-}
+  dropped: entries.value.filter((entry) => entry.status === 'DROPPED').length,
+}))
 
-function onInput() {
-  if (submitted.value) {
-    validate()
-  }
-}
+const visibleEntries = computed(() => entries.value.filter((entry) => !entry.hidden))
 
-function onVisibilityChange(value: string) {
-  form.libraryVisibility = value as LibraryVisibility
-}
-
-function cancel() {
-  router.back()
-}
-
-function onSubmit() {
-  submitted.value = true
-  errorMessage.value = undefined
-
-  if (!validate()) {
-    return
-  }
-
-  const payload = {
-    username: form.username.trim().toLowerCase(),
-    bio: form.bio.trim(),
-    avatarUrl: form.avatarUrl.trim(),
-    bannerUrl: form.bannerUrl.trim(),
-    libraryVisibility: form.libraryVisibility,
-  }
-
-  console.log('Actualizar perfil:', payload)
-
-  // Más adelante:
-  //
-  // loading.value = true
-  //
-  // try {
-  //   await profileService.updateProfile(payload)
-  //   router.push(`/profile/${payload.username}`)
-  // } catch (error) {
-  //   errorMessage.value = ...
-  // } finally {
-  //   loading.value = false
-  // }
-  //
-  // PATCH /api/v1/me/profile
-}
+const previewGames = computed(() => visibleEntries.value.slice(0, 4).map((entry) => entry.game))
 </script>
 
 <template>
-  <section class="edit-profile-page">
-    <header class="edit-profile-page__header">
-      <div>
-        <h1 class="edit-profile-page__title">
-          {{ t('profile.editTitle') }}
-        </h1>
+  <section class="profile-page">
+    <ProfileHeader
+      :username="profile.username"
+      :avatar-url="profile.avatarUrl || undefined"
+      :banner-url="profile.bannerUrl || undefined"
+      :bio="profile.bio"
+      :own-profile="ownProfile"
+    />
 
-        <p class="edit-profile-page__description">
-          {{ t('profile.editDescription') }}
-        </p>
-      </div>
-    </header>
+    <div class="profile-page__content">
+      <section class="profile-page__stats" :aria-label="t('profile.statsLabel')">
+        <article class="profile-stat">
+          <strong class="profile-stat__value">
+            {{ stats.total }}
+          </strong>
 
-    <section class="edit-profile-page__preview">
-      <div
-        class="edit-profile-page__banner"
-        :style="bannerStyle"
-      />
+          <span class="profile-stat__label">
+            {{ t('profile.stats.total') }}
+          </span>
+        </article>
 
-      <div class="edit-profile-page__avatar">
-        <Avatar
-          :name="form.username"
-          :src="form.avatarUrl || undefined"
-        />
-      </div>
-    </section>
+        <article class="profile-stat">
+          <strong class="profile-stat__value">
+            {{ stats.playing }}
+          </strong>
 
-    <form
-      class="edit-profile-page__form"
-      novalidate
-      @submit.prevent="onSubmit"
-    >
-      <p
-        v-if="errorMessage"
-        class="edit-profile-page__error"
-        role="alert"
-      >
-        {{ errorMessage }}
-      </p>
+          <span class="profile-stat__label">
+            {{ t('profile.stats.playing') }}
+          </span>
+        </article>
 
-      <FormField
-        id="profile-username"
-        :label="t('profile.username')"
-        :error="errors.username"
-      >
-        <template #default="{ describedBy, invalid }">
-          <BaseInput
-            id="profile-username"
-            v-model="form.username"
-            type="text"
-            autocomplete="username"
-            :invalid="invalid"
-            :aria-describedby="describedBy"
-            @update:model-value="onInput"
-          />
-        </template>
-      </FormField>
+        <article class="profile-stat">
+          <strong class="profile-stat__value">
+            {{ stats.completed }}
+          </strong>
 
-      <FormField
-        id="profile-bio"
-        :label="t('profile.bioField')"
-        :error="errors.bio"
-        :hint="t('profile.bioHint')"
-      >
-        <template #default="{ describedBy, invalid }">
-          <BaseTextarea
-            id="profile-bio"
-            v-model="form.bio"
-            :invalid="invalid"
-            :aria-describedby="describedBy"
-            :maxlength="300"
-            @update:model-value="onInput"
-          />
-        </template>
-      </FormField>
+          <span class="profile-stat__label">
+            {{ t('profile.stats.completed') }}
+          </span>
+        </article>
 
-      <FormField
-        id="profile-avatar-url"
-        :label="t('profile.avatarUrl')"
-        :error="errors.avatarUrl"
-      >
-        <template #default="{ describedBy, invalid }">
-          <BaseInput
-            id="profile-avatar-url"
-            v-model="form.avatarUrl"
-            type="url"
-            :invalid="invalid"
-            :aria-describedby="describedBy"
-            @update:model-value="onInput"
-          />
-        </template>
-      </FormField>
+        <article class="profile-stat">
+          <strong class="profile-stat__value">
+            {{ stats.wantToPlay }}
+          </strong>
 
-      <FormField
-        id="profile-banner-url"
-        :label="t('profile.bannerUrl')"
-        :error="errors.bannerUrl"
-      >
-        <template #default="{ describedBy, invalid }">
-          <BaseInput
-            id="profile-banner-url"
-            v-model="form.bannerUrl"
-            type="url"
-            :invalid="invalid"
-            :aria-describedby="describedBy"
-            @update:model-value="onInput"
-          />
-        </template>
-      </FormField>
+          <span class="profile-stat__label">
+            {{ t('profile.stats.wantToPlay') }}
+          </span>
+        </article>
 
-      <FormField
-        id="profile-library-visibility"
-        :label="t('profile.libraryVisibility')"
-      >
-        <template #default="{ describedBy }">
-          <BaseSelect
-            id="profile-library-visibility"
-            :model-value="form.libraryVisibility"
-            :options="visibilityOptions"
-            :aria-describedby="describedBy"
-            @update:model-value="onVisibilityChange"
-          />
-        </template>
-      </FormField>
+        <article class="profile-stat">
+          <strong class="profile-stat__value">
+            {{ stats.dropped }}
+          </strong>
 
-      <div class="edit-profile-page__actions">
-        <BaseButton
-          type="button"
-          variant="ghost"
-          :disabled="loading"
-          @click="cancel"
-        >
-          {{ t('common.cancel') }}
-        </BaseButton>
+          <span class="profile-stat__label">
+            {{ t('profile.stats.dropped') }}
+          </span>
+        </article>
+      </section>
 
-        <BaseButton
-          type="submit"
-          :loading="loading"
-        >
-          {{ t('common.save') }}
-        </BaseButton>
-      </div>
-    </form>
+      <LibraryPreview :games="previewGames" :private="libraryIsPrivate" />
+    </div>
   </section>
 </template>
 
 <style scoped lang="scss">
-.edit-profile-page {
+.profile-page {
+  width: 100%;
+}
+
+.profile-page__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-7);
   width: 100%;
-  max-width: 880px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-6) var(--space-4);
 
@@ -308,65 +127,39 @@ function onSubmit() {
   }
 }
 
-.edit-profile-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
+.profile-page__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
 
-.edit-profile-page__title {
-  font-size: 2rem;
-  line-height: 1.15;
-}
-
-.edit-profile-page__description {
-  max-width: 640px;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-}
-
-.edit-profile-page__preview {
-  position: relative;
-  padding-bottom: 40px;
-}
-
-.edit-profile-page__banner {
-  width: 100%;
-  height: 180px;
-  background-color: var(--color-surface-2);
-  background-position: center;
-  background-size: cover;
-  border-radius: var(--radius-lg);
-
-  @media (min-width: 768px) {
-    height: 220px;
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
-.edit-profile-page__avatar {
-  position: absolute;
-  bottom: 0;
-  left: var(--space-5);
-}
-
-.edit-profile-page__form {
+.profile-stat {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-6);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 110px;
+  padding: var(--space-4);
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
+  text-align: center;
 }
 
-.edit-profile-page__error {
-  color: var(--color-danger);
+.profile-stat__value {
+  color: var(--color-text);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.profile-stat__label {
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
-}
-
-.edit-profile-page__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-3);
-  padding-top: var(--space-2);
 }
 </style>

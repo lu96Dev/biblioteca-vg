@@ -10,10 +10,11 @@ import type { GameDetail } from '@/features/catalog/types/game'
 
 const props = defineProps<{
   game: GameDetail
+  inLibrary?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'add'): void
+  (e: 'library-action'): void
 }>()
 
 const { t, locale } = useI18n()
@@ -38,26 +39,17 @@ const bannerStyle = computed(() =>
 )
 
 const subtitle = computed(() =>
-  [props.game.developer, releaseDate.value]
-    .filter(Boolean)
-    .join(' · '),
+  [props.game.developer, releaseDate.value].filter(Boolean).join(' · '),
 )
 </script>
 
 <template>
   <section class="hero">
-    <div
-      class="hero__banner"
-      :style="bannerStyle"
-    />
+    <div class="hero__banner" :style="bannerStyle" />
 
     <div class="hero__content">
       <div class="hero__cover">
-        <img
-          v-if="game.coverUrl"
-          :src="game.coverUrl"
-          alt=""
-        />
+        <img v-if="game.coverUrl" :src="game.coverUrl" alt="" />
       </div>
 
       <div class="hero__info">
@@ -65,17 +57,11 @@ const subtitle = computed(() =>
           {{ game.title }}
         </h1>
 
-        <p
-          v-if="subtitle"
-          class="hero__subtitle"
-        >
+        <p v-if="subtitle" class="hero__subtitle">
           {{ subtitle }}
         </p>
 
-        <p
-          v-if="game.externalRating != null"
-          class="hero__rating"
-        >
+        <p v-if="game.externalRating != null" class="hero__rating">
           <Rating :value="game.externalRating" />
 
           <span>
@@ -83,16 +69,10 @@ const subtitle = computed(() =>
           </span>
         </p>
 
-        <BaseButton
-          size="lg"
-          @click="emit('add')"
-        >
-          <BaseIcon
-            name="plus"
-            :size="18"
-          />
+        <BaseButton size="lg" @click="emit('library-action')">
+          <BaseIcon :name="inLibrary ? 'edit' : 'plus'" :size="18" />
 
-          {{ t('game.addToLibrary') }}
+          {{ inLibrary ? t('game.editLibraryEntry') : t('game.addToLibrary') }}
         </BaseButton>
       </div>
     </div>

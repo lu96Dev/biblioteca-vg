@@ -10,10 +10,7 @@ const { t } = useI18n()
 const loading = ref(false)
 const errorMessage = ref<string>()
 
-function handleLogin(credentials: {
-  email: string
-  password: string
-}) {
+function handleLogin(credentials: { email: string; password: string }) {
   console.log('Login:', credentials)
 
   // TEMPORAL:
@@ -45,7 +42,7 @@ function handleLogin(credentials: {
 <template>
   <section class="login-page">
     <div class="login-page__container">
-      <Logo class="login-page__logo" />
+      <Logo class="login-page__logo" size="lg" />
 
       <div class="login-page__heading">
         <h1 class="login-page__title">
@@ -57,11 +54,7 @@ function handleLogin(credentials: {
         </p>
       </div>
 
-      <LoginForm
-        :loading="loading"
-        :error-message="errorMessage"
-        @submit="handleLogin"
-      />
+      <LoginForm :loading="loading" :error-message="errorMessage" @submit="handleLogin" />
     </div>
   </section>
 </template>

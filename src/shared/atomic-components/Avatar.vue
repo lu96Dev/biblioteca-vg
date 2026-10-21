@@ -1,36 +1,93 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue'
+
+import BaseIcon from '@/shared/atomic-components/BaseIcon.vue'
 
 const props = withDefaults(
-  defineProps<{ name: string; src?: string; size?: number }>(),
-  { size: 40 },
-);
+  defineProps<{
+    name: string
+    src?: string
+    size?: 'sm' | 'md' | 'lg'
+  }>(),
+  {
+    size: 'md',
+  },
+)
 
-const failed = ref(false);
-watch(() => props.src, () => { failed.value = false; });
+const imageError = ref(false)
 
-const initial = computed(() => props.name.trim().charAt(0).toUpperCase() || '?');
+watch(
+  () => props.src,
+  () => {
+    imageError.value = false
+  },
+)
 </script>
 
 <template>
-  <span class="avatar" :style="{ width: `${size}px`, height: `${size}px`, fontSize: `${size * 0.4}px` }">
-    <img v-if="src && !failed" :src="src" :alt="name" @error="failed = true" />
-    <span v-else aria-hidden="true">{{ initial }}</span>
+  <span class="avatar" :class="`avatar--${size}`">
+    <img
+      v-if="src && !imageError"
+      class="avatar__image"
+      :src="src"
+      :alt="name"
+      @error="imageError = true"
+    />
+
+    <BaseIcon
+      v-else
+      class="avatar__fallback"
+      name="user"
+      :size="size === 'lg' ? 60 : size === 'md' ? 24 : 16"
+      aria-hidden="true"
+    />
   </span>
 </template>
 
 <style scoped lang="scss">
 .avatar {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   overflow: hidden;
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
   border-radius: 50%;
-  background: var(--color-accent);
-  color: #fff;
-  font-weight: 700;
 
-  img { width: 100%; height: 100%; object-fit: cover; }
+  &--sm {
+    width: 30px;
+    height: 30px;
+  }
+
+  &--md {
+    width: 56px;
+    height: 56px;
+  }
+
+  &--lg {
+    width: 144px;
+    height: 144px;
+
+    /*
+     * Este borde utiliza el fondo de la aplicación
+     * para separar visualmente el avatar del banner.
+     */
+    border: 5px solid var(--color-bg);
+
+    box-shadow:
+      0 0 0 1px var(--color-border),
+      0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+.avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar__fallback {
+  flex-shrink: 0;
 }
 </style>

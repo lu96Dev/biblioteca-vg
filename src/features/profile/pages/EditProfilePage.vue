@@ -2,7 +2,8 @@
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-
+import { type LibraryVisibility, type UpdateProfilePayload } from '@/features/profile/types/profile'
+import { useProfile } from '@/features/profile/composables/useProfile'
 import Avatar from '@/shared/atomic-components/Avatar.vue'
 import BaseButton from '@/shared/atomic-components/BaseButton.vue'
 import BaseInput from '@/shared/atomic-components/BaseInput.vue'
@@ -12,32 +13,18 @@ import FormField from '@/shared/components/FormField.vue'
 
 import type { SelectOption } from '@/shared/types/ui'
 
-type LibraryVisibility = 'PUBLIC' | 'PRIVATE'
-
-interface EditProfileForm {
-  username: string
-  bio: string
-  avatarUrl: string
-  bannerUrl: string
-  libraryVisibility: LibraryVisibility
-}
-
 const { t } = useI18n()
 const router = useRouter()
-
+const { profile, updateProfile } = useProfile()
 const loading = ref(false)
 const errorMessage = ref<string>()
 const submitted = ref(false)
-
-// MOCK TEMPORAL.
-// Más adelante estos datos vendrán de:
-// GET /api/v1/me/profile
-const form = reactive<EditProfileForm>({
-  username: 'luis',
-  bio: 'RPG, Souls e indie',
-  avatarUrl: '',
-  bannerUrl: '',
-  libraryVisibility: 'PUBLIC',
+const form = reactive<UpdateProfilePayload>({
+  username: profile.value.username,
+  bio: profile.value.bio,
+  avatarUrl: profile.value.avatarUrl,
+  bannerUrl: profile.value.bannerUrl,
+  libraryVisibility: profile.value.libraryVisibility,
 })
 
 const errors = reactive<{
@@ -75,27 +62,13 @@ function validate(): boolean {
       ? t('auth.errors.usernameLength')
       : undefined
 
-  errors.bio =
-    form.bio.length > 300
-      ? t('profile.errors.bioLength')
-      : undefined
+  errors.bio = form.bio.length > 300 ? t('profile.errors.bioLength') : undefined
 
-  errors.avatarUrl =
-    form.avatarUrl.length > 1000
-      ? t('profile.errors.urlLength')
-      : undefined
+  errors.avatarUrl = form.avatarUrl.length > 1000 ? t('profile.errors.urlLength') : undefined
 
-  errors.bannerUrl =
-    form.bannerUrl.length > 1000
-      ? t('profile.errors.urlLength')
-      : undefined
+  errors.bannerUrl = form.bannerUrl.length > 1000 ? t('profile.errors.urlLength') : undefined
 
-  return (
-    !errors.username &&
-    !errors.bio &&
-    !errors.avatarUrl &&
-    !errors.bannerUrl
-  )
+  return !errors.username && !errors.bio && !errors.avatarUrl && !errors.bannerUrl
 }
 
 function onInput() {
@@ -120,85 +93,57 @@ function onSubmit() {
     return
   }
 
-  const payload = {
+  const payload: UpdateProfilePayload = {
     username: form.username.trim().toLowerCase(),
+
     bio: form.bio.trim(),
+
     avatarUrl: form.avatarUrl.trim(),
+
     bannerUrl: form.bannerUrl.trim(),
+
     libraryVisibility: form.libraryVisibility,
   }
 
-  console.log('Actualizar perfil:', payload)
+  updateProfile(payload)
 
-  // TEMPORAL:
-  //
-  // Más adelante:
-  //
-  // loading.value = true
-  //
-  // try {
-  //   await profileService.updateProfile(payload)
-  //
-  //   router.push({
-  //     name: 'profile',
-  //     params: {
-  //       username: payload.username,
-  //     },
-  //   })
-  // } catch (error) {
-  //   errorMessage.value = ...
-  // } finally {
-  //   loading.value = false
-  // }
-  //
-  // PATCH /api/v1/me/profile
+  router.push({
+    name: 'profile',
+    params: {
+      username: payload.username,
+    },
+  })
 }
 </script>
 
 <template>
   <section class="edit-profile-page">
     <header class="edit-profile-page__header">
-      <h1 class="edit-profile-page__title">
-        {{ t('profile.editTitle') }}
-      </h1>
+      <div>
+        <h1 class="edit-profile-page__title">
+          {{ t('profile.editTitle') }}
+        </h1>
 
-      <p class="edit-profile-page__description">
-        {{ t('profile.editDescription') }}
-      </p>
+        <p class="edit-profile-page__description">
+          {{ t('profile.editDescription') }}
+        </p>
+      </div>
     </header>
 
     <section class="edit-profile-page__preview">
-      <div
-        class="edit-profile-page__banner"
-        :style="bannerStyle"
-      />
+      <div class="edit-profile-page__banner" :style="bannerStyle" />
 
       <div class="edit-profile-page__avatar">
-        <Avatar
-          :name="form.username"
-          :src="form.avatarUrl || undefined"
-        />
+        <Avatar :name="form.username" :src="form.avatarUrl || undefined" size="lg" />
       </div>
     </section>
 
-    <form
-      class="edit-profile-page__form"
-      novalidate
-      @submit.prevent="onSubmit"
-    >
-      <p
-        v-if="errorMessage"
-        class="edit-profile-page__error"
-        role="alert"
-      >
+    <form class="edit-profile-page__form" novalidate @submit.prevent="onSubmit">
+      <p v-if="errorMessage" class="edit-profile-page__error" role="alert">
         {{ errorMessage }}
       </p>
 
-      <FormField
-        id="profile-username"
-        :label="t('profile.username')"
-        :error="errors.username"
-      >
+      <FormField id="profile-username" :label="t('profile.username')" :error="errors.username">
         <template #default="{ describedBy, invalid }">
           <BaseInput
             id="profile-username"
@@ -222,19 +167,15 @@ function onSubmit() {
           <BaseTextarea
             id="profile-bio"
             v-model="form.bio"
-            :maxlength="300"
             :invalid="invalid"
             :aria-describedby="describedBy"
+            :maxlength="300"
             @update:model-value="onInput"
           />
         </template>
       </FormField>
 
-      <FormField
-        id="profile-avatar-url"
-        :label="t('profile.avatarUrl')"
-        :error="errors.avatarUrl"
-      >
+      <FormField id="profile-avatar-url" :label="t('profile.avatarUrl')" :error="errors.avatarUrl">
         <template #default="{ describedBy, invalid }">
           <BaseInput
             id="profile-avatar-url"
@@ -247,11 +188,7 @@ function onSubmit() {
         </template>
       </FormField>
 
-      <FormField
-        id="profile-banner-url"
-        :label="t('profile.bannerUrl')"
-        :error="errors.bannerUrl"
-      >
+      <FormField id="profile-banner-url" :label="t('profile.bannerUrl')" :error="errors.bannerUrl">
         <template #default="{ describedBy, invalid }">
           <BaseInput
             id="profile-banner-url"
@@ -264,10 +201,7 @@ function onSubmit() {
         </template>
       </FormField>
 
-      <FormField
-        id="profile-library-visibility"
-        :label="t('profile.libraryVisibility')"
-      >
+      <FormField id="profile-library-visibility" :label="t('profile.libraryVisibility')">
         <template #default="{ describedBy }">
           <BaseSelect
             id="profile-library-visibility"
@@ -280,19 +214,11 @@ function onSubmit() {
       </FormField>
 
       <div class="edit-profile-page__actions">
-        <BaseButton
-          type="button"
-          variant="ghost"
-          :disabled="loading"
-          @click="cancel"
-        >
+        <BaseButton type="button" variant="ghost" :disabled="loading" @click="cancel">
           {{ t('common.cancel') }}
         </BaseButton>
 
-        <BaseButton
-          type="submit"
-          :loading="loading"
-        >
+        <BaseButton type="submit" :loading="loading">
           {{ t('common.save') }}
         </BaseButton>
       </div>
@@ -350,10 +276,16 @@ function onSubmit() {
   }
 }
 
+.edit-profile-page__preview {
+  position: relative;
+  margin-bottom: 78px;
+}
+
 .edit-profile-page__avatar {
   position: absolute;
-  bottom: 0;
+  bottom: -78px;
   left: var(--space-5);
+  z-index: 2;
 }
 
 .edit-profile-page__form {

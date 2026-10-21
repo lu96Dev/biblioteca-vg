@@ -1,18 +1,43 @@
 <script setup lang="ts">
-// Marcador de posición hasta tener nombre y logotipo definitivos.
-withDefaults(defineProps<{ size?: 'md' | 'xl'; text?: string }>(), { size: 'md', text: '[LOGO]' });
+import logoUrl from '@/assets/branding/logo.png'
+
+withDefaults(
+  defineProps<{
+    alt?: string
+    size?: 'sm' | 'md' | 'lg'
+  }>(),
+  {
+    alt: 'Biblioteca VG',
+    size: 'md',
+  },
+)
 </script>
 
 <template>
-  <span :class="['logo', `logo--${size}`]"><slot>{{ text }}</slot></span>
+  <img
+    class="logo"
+    :class="`logo--${size}`"
+    :src="logoUrl"
+    :alt="alt"
+  />
 </template>
 
 <style scoped lang="scss">
 .logo {
-  font-weight: 700;
-  color: var(--color-text);
+  display: block;
+  width: auto;
+  object-fit: contain;
 
-  &--md { font-size: var(--font-size-lg); }
-  &--xl { font-size: var(--font-size-hero); letter-spacing: -2px; line-height: 1; }
+  &--sm {
+    height: 48px;
+  }
+
+  &--md {
+    height: 96px;
+  }
+
+  &--lg {
+    height: 220px;
+  }
 }
 </style>
