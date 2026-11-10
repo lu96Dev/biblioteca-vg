@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-
+import type { RegisterPayload } from '@/features/auth/types/auth'
 import BaseButton from '@/shared/atomic-components/BaseButton.vue'
 import BaseInput from '@/shared/atomic-components/BaseInput.vue'
 import BaseLink from '@/shared/atomic-components/BaseLink.vue'
@@ -13,14 +13,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (
-    e: 'submit',
-    payload: {
-      username: string
-      email: string
-      password: string
-    },
-  ): void
+  (e: 'submit', payload: RegisterPayload): void
 }>()
 
 const { t } = useI18n()

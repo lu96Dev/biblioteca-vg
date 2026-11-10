@@ -56,8 +56,16 @@
       "email": "Introduce un correo electrónico válido",
       "usernameLength": "El nombre de usuario debe tener entre 3 y 50 caracteres",
       "passwordLength": "La contraseña debe tener entre 8 y 72 caracteres",
-      "passwordMismatch": "Las contraseñas no coinciden"
-    }
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "invalidCredentials": "El correo electrónico o la contraseña no son correctos.",
+      "emailAlreadyExists": "Ya existe una cuenta con este correo electrónico.",
+      "usernameAlreadyExists": "Este nombre de usuario ya está en uso.",
+      "unexpected": "No se ha podido completar la operación. Inténtalo de nuevo."
+    },
+
+    "invalidCredentials": "El correo electrónico o la contraseña no son correctos.",
+    "emailAlreadyExists": "Ya existe una cuenta con este correo electrónico.",
+    "usernameAlreadyExists": "Este nombre de usuario ya está en uso."
   },
 
   "catalog": {

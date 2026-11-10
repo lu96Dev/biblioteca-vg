@@ -40,8 +40,7 @@ const router = createRouter({
       path: '/',
       component: AppLayout,
 
-      // Preparado para cuando implementemos autenticación
-      // meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
 
       children: [
         {

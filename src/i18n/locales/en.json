@@ -56,8 +56,15 @@
       "email": "Enter a valid email address",
       "usernameLength": "Username must be between 3 and 50 characters",
       "passwordLength": "Password must be between 8 and 72 characters",
-      "passwordMismatch": "Passwords do not match"
-    }
+      "passwordMismatch": "Passwords do not match",
+      "invalidCredentials": "The email address or password is incorrect.",
+      "emailAlreadyExists": "An account with this email address already exists.",
+      "usernameAlreadyExists": "This username is already in use.",
+      "unexpected": "The operation could not be completed. Please try again."
+    },
+    "invalidCredentials": "The email address or password is incorrect.",
+    "emailAlreadyExists": "An account with this email address already exists.",
+    "usernameAlreadyExists": "This username is already in use."
   },
 
   "catalog": {

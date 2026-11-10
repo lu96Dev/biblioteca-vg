@@ -1,33 +1,66 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import RegisterForm from '@/features/auth/components/RegisterForm.vue'
+import { useAuth } from '@/features/auth/composables/useAuth'
+
 import Logo from '@/shared/atomic-components/Logo.vue'
 
+import type { RegisterPayload } from '@/features/auth/types/auth'
+
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
+
+const { register } = useAuth()
 
 const loading = ref(false)
 const errorMessage = ref<string>()
 
-function handleRegister(payload: { username: string; email: string; password: string }) {
-  console.log('Registro:', payload)
+function getRedirectPath(): string {
+  const redirect = route.query.redirect
 
-  // TEMPORAL:
-  // Aquí conectaremos más adelante:
-  //
-  // authStore.register(payload)
-  //        ↓
-  // auth.service.ts
-  //        ↓
-  // POST /api/v1/auth/register
+  if (typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')) {
+    return redirect
+  }
+
+  return '/games'
+}
+
+async function handleRegister(payload: RegisterPayload) {
+  loading.value = true
+  errorMessage.value = undefined
+
+  try {
+    register(payload)
+
+    await router.push(getRedirectPath())
+  } catch (error) {
+    if (error instanceof Error) {
+      switch (error.message) {
+        case 'EMAIL_ALREADY_EXISTS':
+          errorMessage.value = t('auth.errors.emailAlreadyExists')
+          return
+
+        case 'USERNAME_ALREADY_EXISTS':
+          errorMessage.value = t('auth.errors.usernameAlreadyExists')
+          return
+      }
+    }
+
+    errorMessage.value = t('auth.errors.unexpected')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
 <template>
   <section class="register-page">
     <div class="register-page__container">
-      <Logo class="login-page__logo" size="lg" />
+      <Logo class="register-page__logo" size="md" />
 
       <div class="register-page__heading">
         <h1 class="register-page__title">
